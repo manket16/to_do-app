@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: skyblue;
+            margin: 0;
+            font-family: Arial, sans-serif;
+          text-align:center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .task-container {
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+            background-color: white;
+        }
+
+        button {
+            background-color: #ff0000;
+            color: #ffffff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+      .button-container {
+         text-align:center;
+          color: red;
+          border: none;
+          padding: 10px 20px;
+          cursor: pointer;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Tasks</h1>
+        {% for task in user_tasks %}
+            <div class="task-container">
+                <span>{{ task }}</span>
+                <form id="removeForm" action="/remove" method="POST">
+
+                  <input type="hidden" name="username" value="{{ session['username'] }}">
+                    <input type="hidden" name="task" value="{{ task }}">
+                    <button type="button" onclick="removeTask('{{ task }}')">Remove</button>
+                </form>
+            </div>
+        {% endfor %}
+
+        <script>
+            function removeTask(task) {
+                var confirmation = confirm('Are you sure you want to remove this task?');
+                if (confirmation) {
+                    var form = document.getElementById('removeForm');
+                    form.querySelector('input[name="task"]').value = task;
+                    form.submit();
+                }
+            }
+        </script>
+    </div>
+  <br>
+  <div class = "button-container">
+    <a href="/index">
+        <button type="button">Go back</button>
+    </a>
+  
+  </div>
+
+</body>
+</html>
